@@ -130,25 +130,14 @@ if __name__ == '__main__':
                    help="specify account-name from accounts.ini")
 
     args = p.parse_args()
+    mailer = None
 
-    # If using account
+    # if using account
     if ((args.user == args.password == args.server == args.port == None) and
         args.account != None):
         mailer = create_mailer({'create_by': 'account',
                                 'account': args.account})
-        # if 'action' is valid
-        if mailer and args.action in ('mail', 'testmail'):
-            # send custom mail
-            if args.action == 'mail':
-                mailer.send_mail(recipient=args.to,
-                                 subject=args.subject,
-                                 body=args.body)
-            # send test-mail
-            elif args.action == 'testmail':
-                mailer.send_mail(recipient=args.to,
-                                 subject="Testmail",
-                                 bosy=args.body)
-    # if script params (u, p, s)
+    # if using script params (u, p, s)
     elif ((args.user and args.password and args.server) != None and
           args.account == None):
         mailer = create_mailer({'create_by': 'input',
@@ -157,7 +146,18 @@ if __name__ == '__main__':
                                 'server': args.server,
                                 'port': args.port,
                                 'ssl': args.ssl})
-        if mailer:
-            mailer.print_info()
+
+    # if 'action' is valid
+    if mailer and args.action in ('mail', 'testmail'):
+        # send custom mail
+        if args.action == 'mail':
+            mailer.send_mail(recipient=args.to,
+                             subject=args.subject,
+                             body=args.body)
+        # send test-mail
+        elif args.action == 'testmail':
+            mailer.send_mail(recipient=args.to,
+                             subject="Testmail",
+                             bosy=args.body)
     else:
         print("Only one method allow. Pls use account(-a) or manual(-u,-p,-s)")
