@@ -17,7 +17,7 @@ class Mailer():
         header = "From: {}\r\n".format(self.username) + \
                  "To: {}\r\n".format(recipient) + \
                  "Subject: {}\r\n".format(subject) + \
-                 body
+                 body.replace('ä', 'ae').replace('ö', 'oe').replace('ü', 'ue')
 
         try:
             if self.ssl:
