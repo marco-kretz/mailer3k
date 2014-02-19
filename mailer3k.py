@@ -24,12 +24,8 @@ class Mailer():
                 smtp_server = smtplib.SMTP_SSL(self.server, self.port)
             else:
                 smtp_server = smtplib.SMTP(self.server, self.port)
-            print('Logging in...', end='')
             smtp_server.login(self.username, self.password)
-            print('OK!')
-            print('Sending mail...', end='')
             smtp_server.sendmail(self.username, recipient, header)
-            print('OK!')
         except Exception as e:
             print('ERROR: {}'.format(e))
         else:
