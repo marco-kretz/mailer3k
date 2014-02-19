@@ -61,9 +61,9 @@ if __name__ == '__main__':
     p.add_argument('-t', '--to', required=True,
                         help="The recipient's address")
     p.add_argument('--subject', default='',
-                   help="Subject for action: mail")
+                   help="Subject for action: mail (default: empty)")
     p.add_argument('--body', default='',
-                        help="Body for action: mail")
+                        help="Body for action: mail (default: empty)")
     p.add_argument('-v', '--verbosity', action="count", default=0,
                    help="Set verbosity-level [1-2]")
 
