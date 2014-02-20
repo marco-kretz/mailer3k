@@ -7,6 +7,7 @@ import configparser
 
 
 class Mailer():
+    """ Simple mailer-object. """
 
     def __init__(self, user, password, server, port=25, ssl=False):
         self.username = user
@@ -14,7 +15,6 @@ class Mailer():
         self.server = server
         self.port = port
         self.ssl = ssl
-
 
     def send_mail(self, recipient, subject, body):
         """ Sends a custom mail. """
@@ -46,8 +46,10 @@ class Mailer():
         print('Port: {}'.format(self.port))
         print('Username: {}'.format(self.username))
         print('Password: {}'.format(self.password))
-        if self.ssl: print('SSL: On')
-        else: print('SSL: Off')
+        if self.ssl:
+            print('SSL: On')
+        else:
+            print('SSL: Off')
 
 
 def create_mailer(data):
@@ -61,8 +63,10 @@ def create_mailer(data):
         if data['account'] in accounts:
             account = accounts[data['account']]
             if not is_valid_account(account): return False
-            if account['TLS'] == 'yes': ssl = True
-            else: ssl = False
+            if account['TLS'] == 'On':
+                ssl = True
+            else:
+                ssl = False
             try:
                 return Mailer(account['Username'], account['Password'],
                               account['Server'], int(account['Port']), ssl)
@@ -77,10 +81,13 @@ def create_mailer(data):
     # if using script-params (u, p, s)
     elif data['create_by'] == 'input':
         # if no port was set, use 25
-        if data['port'] == None: port = 25
-        else: port = data['port']
+        if data['port'] is None:
+            port = 25
+        else:
+            port = data['port']
         return Mailer(data['username'], data['password'], data['server'],
                       port, data['ssl'])
+
 
 def is_valid_account(account):
     """Check if requested account is valid."""
@@ -106,24 +113,24 @@ if __name__ == '__main__':
     desc = "Mailer3k by Marco <zantekk> K."
     p = argparse.ArgumentParser(description=desc,
                                 formatter_class=argparse.RawTextHelpFormatter)
-    p.add_argument('action', help="testmail: Send a test mail\n" + \
+    p.add_argument('action', help="testmail: Send a test mail\n" +
                                   "mail: Send mail with custom subject & body")
     p.add_argument('-u', '--user', default=None,
-                        help="Username for the SMTP server")
+                   help="Username for the SMTP server")
     p.add_argument('-p', '--password', default=None,
-                        help="Password for the SMTP server")
+                   help="Password for the SMTP server")
     p.add_argument('-s', '--server', default=None,
-                        help="SMTP server address")
+                   help="SMTP server address")
     p.add_argument('-P', '--port', required=False, type=int, default=None,
-                        help="SMTP server port (default: 25)")
+                   help="SMTP server port (default: 25)")
     p.add_argument('--ssl', required=False, action="store_true",
-                        help="Turn SSL on (default: off)", default=False)
+                   help="Turn SSL on (default: off)", default=False)
     p.add_argument('-t', '--to', required=True,
-                        help="The recipient's address")
+                   help="The recipient's address")
     p.add_argument('--subject', default='',
                    help="Subject for action: mail (default: empty)")
     p.add_argument('--body', default='',
-                        help="Body for action: mail (default: empty)")
+                   help="Body for action: mail (default: empty)")
     p.add_argument('-v', '--verbosity', action="count", default=0,
                    help="Set verbosity-level [1-2]")
     p.add_argument('-a', '--account', default=None,
@@ -133,13 +140,13 @@ if __name__ == '__main__':
     mailer = None
 
     # if using account
-    if ((args.user == args.password == args.server == args.port == None) and
-        args.account != None):
+    if (args.user == args.password == args.server == args.port is not None) \
+            and args.account is not None:
         mailer = create_mailer({'create_by': 'account',
                                 'account': args.account})
     # if using script params (u, p, s)
-    elif ((args.user and args.password and args.server) != None and
-          args.account == None):
+    elif (args.user and args.password and args.server) is not None \
+            and args.account is None:
         mailer = create_mailer({'create_by': 'input',
                                 'username': args.user,
                                 'password': args.password,
@@ -158,6 +165,6 @@ if __name__ == '__main__':
         elif args.action == 'testmail':
             mailer.send_mail(recipient=args.to,
                              subject="Testmail",
-                             bosy=args.body)
+                             body=args.body)
     else:
         print("Only one method allow. Pls use account(-a) or manual(-u,-p,-s)")
