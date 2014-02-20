@@ -30,11 +30,16 @@ Custom mail:
 ### Using accounts
 
 Create a file called `accounts.ini` in the script's dir. The file syntax is:
->[accoutname]
->User = myuser
->Password = mypass
->Server = smtp.myserver.com
->Port = 465
->SSL = On`
+`[accoutname]
+
+User = myuser
+
+Password = mypass
+
+Server = smtp.myserver.com
+
+Port = 465
+
+SSL = On`
 
 Saved accounts can be used like this: `mailer3k.py testmail -a accountname --to target@example.com`
