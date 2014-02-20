@@ -32,7 +32,7 @@ Custom mail:
 Create a file called `accounts.ini` in the script's dir. The file syntax is:
 
     [accoutname]
-    User = myuser
+    Username = myuser
     Password = mypass
     Server = smtp.myserver.com
     Port = 465
