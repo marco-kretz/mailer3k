@@ -53,7 +53,7 @@ class Mailer():
 
 
 def create_mailer(data):
-    """ Create mailer-object based on user's choice to use account or not."""
+    """ Create mailer-object based on user's choice to use account or not. """
 
     # if using account read accounts.ini
     if data['create_by'] == 'account':
@@ -62,8 +62,9 @@ def create_mailer(data):
         # if account is listed in accounts.ini
         if data['account'] in accounts:
             account = accounts[data['account']]
-            if not is_valid_account(account): return False
-            if account['TLS'] == 'On':
+            if not is_valid_account(account):
+                return False
+            if account['SSL'] == 'On':
                 ssl = True
             else:
                 ssl = False
@@ -90,7 +91,7 @@ def create_mailer(data):
 
 
 def is_valid_account(account):
-    """Check if requested account is valid."""
+    """ Check if requested account is valid. """
 
     # check if basic params from accounts.ini are set and not empty
     try:
@@ -98,14 +99,15 @@ def is_valid_account(account):
             account['Username'] is not '' and
             account['Password'] is not '' and
             account['Server'] is not '' and
-            account['Port'] is not ''
-            ):
+                            account['Port'] is not '' and
+                        account['SSL'] is not ''
+        ):
             return True
     # occurs if any important option is missing
     except KeyError as ke:
         print('ERROR: {} value is missing'.format(ke))
         return False
-    print('ERROR: Invalid account')
+    print('ERROR: Found emtpy account values!')
     return False
 
 
@@ -140,12 +142,12 @@ if __name__ == '__main__':
     mailer = None
 
     # if using account
-    if (args.user == args.password == args.server == args.port is not None) \
+    if not any([args.user, args.password, args.server, args.port]) \
             and args.account is not None:
         mailer = create_mailer({'create_by': 'account',
                                 'account': args.account})
     # if using script params (u, p, s)
-    elif (args.user and args.password and args.server) is not None \
+    elif all([args.user, args.password, args.server]) \
             and args.account is None:
         mailer = create_mailer({'create_by': 'input',
                                 'username': args.user,
@@ -153,6 +155,8 @@ if __name__ == '__main__':
                                 'server': args.server,
                                 'port': args.port,
                                 'ssl': args.ssl})
+    else:
+        print("Only one method allow. Pls use account(-a) or manual(-u,-p,-s)")
 
     # if 'action' is valid
     if mailer and args.action in ('mail', 'testmail'):
@@ -166,5 +170,3 @@ if __name__ == '__main__':
             mailer.send_mail(recipient=args.to,
                              subject="Testmail",
                              body=args.body)
-    else:
-        print("Only one method allow. Pls use account(-a) or manual(-u,-p,-s)")
