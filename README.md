@@ -18,17 +18,23 @@ please report it to me!
 
 ### Basic
 
-Simple testmail: `mailer3k.py testmail -u username -p password -s smtp.exmaple.com -P 25 --to target@example.com`
-Testmail with SSL: `mailer3k.py testmail -u username -p password -s smtp.exmaple.com -P 465 --ssl --to target@example.com`
+Simple testmail:
+`mailer3k.py testmail -u username -p password -s smtp.exmaple.com -P 25 --to target@example.com`
+
+Testmail with SSL:
+`mailer3k.py testmail -u username -p password -s smtp.exmaple.com -P 465 --ssl --to target@example.com`
+
+Custom mail:
+`mailer3k.py mail -u username -p password -s smtp.example.com -P 465 --ssl --to target@exmaple.com --subject "My Subject" --body "Dat body tho!"`
 
 ### Using accounts
 
 Create a file called `accounts.ini` in the script's dir. The file syntax is:
-`[accoutname]
-User = myuser
-Password = mypass
-Server = smtp.myserver.com
-Port = 465
-SSL = On`
+>[accoutname]
+>User = myuser
+>Password = mypass
+>Server = smtp.myserver.com
+>Port = 465
+>SSL = On`
 
 Saved accounts can be used like this: `mailer3k.py testmail -a accountname --to target@example.com`
