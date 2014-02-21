@@ -99,8 +99,8 @@ def is_valid_account(account):
             account['Username'] is not '' and
             account['Password'] is not '' and
             account['Server'] is not '' and
-                            account['Port'] is not '' and
-                        account['SSL'] is not ''
+            account['Port'] is not '' and
+            account['SSL'] is not ''
         ):
             return True
     # occurs if any important option is missing
